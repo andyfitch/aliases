@@ -1,8 +1,3 @@
-alias cde="cd /Users/andyf/Documents/htdocs/expose"
-
-alias o="open ."
-
-alias g="git status"
 alias ga="git add ."
 
 alias gw="grunt watch"
@@ -14,34 +9,5 @@ function gc() {
 alias gp="git pull origin master"
 alias gpu="git push origin master"
 
-alias gpstag="git pull origin staging"
-alias gpustag="git push origin staging"
-
-function gpa() {
-	git pull origin master
-	git pull andy master
-	git pull tom master
-	git pull lawrence master
-}
-
-alias l="ls -la"
-
 alias reload="source ~/dotfiles/bash/aliases"
 alias ea="mate -w ~/dotfiles/bash/aliases && reload"
-
-alias f="find ."
-
-# Expose stuff
-
-function site() {
-	cde
-	if [ -d "current/$1" ]
-	then
-		cd current/$1
-		mate .
-		open "http://localhost/expose/?perm_switch=$1"
-	else
-		echo "There is no site called $1"
-	fi
-}
-
