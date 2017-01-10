@@ -1,5 +1,5 @@
+alias ga="git add ."
 alias gs="git status"
-alias ga="git pull && git add ."
 
 alias gw="gulp watch"
 alias here='printf %s "cd $(pwd)" | pbcopy'
@@ -17,7 +17,7 @@ alias dgpu="git push origin develop"
 alias reload="source ~/dotfiles/bash/aliases"
 
 function clone() {
-	git clone ssh://git@my.parall.ax:7999/es/$1.git && cd $1
+	git clone ssh://git@my.parall.ax:7999/es/$1.git && cd $1 && make
 }
 
 function gd() {
