@@ -1,12 +1,9 @@
+# Aliases
 alias ga="git add ."
 alias gs="git status"
 
 alias gw="gulp watch"
 alias here='printf %s "cd $(pwd)" | pbcopy'
-
-function gc() {
-	git commit -v -a -m "$*"
-}
 
 alias gp="git pull origin master"
 alias gpu="git push origin master"
@@ -16,24 +13,61 @@ alias dgpu="git push origin develop"
 
 alias reload="source ~/dotfiles/bash/aliases"
 
-function clone() {
-	git clone ssh://git@my.parall.ax:7999/es/$1.git && cd $1 && make
-}
-
-function gd() {
-	git branch -D $1
-}
-function gdr() {
-	git push origin --delete $1
-}
-function cleanb() {
-	branch=$(git rev-parse --abbrev-ref HEAD)
-	git checkout master
-	git pull origin master
-	git branch -d $branch
-	echo "Cleaned up $branch"
-}
-
 # Expose stuff
 alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
 alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
+
+
+# Functions
+function gc() {
+    git commit -v -m "$*"
+}
+function clone() {
+    git clone ssh://git@my.parall.ax:7999/es/$1.git && cd $1 && make
+}
+function gd() {
+    git branch -D $1
+}
+function gdr() {
+    git push origin --delete $1
+}
+function cleanb() {
+    branch=$(git rev-parse --abbrev-ref HEAD)
+    git checkout master
+    git pull origin master
+    git branch -d $branch
+    echo "Cleaned up $branch"
+}
+function subl() {
+	sublime $1 -a
+}
+function branch() {
+    options="$(git branch|tr -d '\n'|tr -d '*'|tr -s ' '|xargs)"
+
+    IFS=' '
+
+    select option in $options; do
+        git checkout $option
+        break
+    done
+}
+function pull() {
+    options="$(git branch|tr -d '\n'|tr -d '*'|tr -s ' '|xargs)"
+
+    IFS=' '
+
+    select option in $options; do
+        git pull origin $option
+        break
+    done
+}
+function push() {
+    options="$(git branch|tr -d '\n'|tr -d '*'|tr -s ' '|xargs)"
+
+    IFS=' '
+
+    select option in $options; do
+        git push origin $option
+        break
+    done
+}
