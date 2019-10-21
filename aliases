@@ -2,16 +2,32 @@
 alias ga="git add ."
 alias gs="git status"
 
-alias gw="gulp watch"
+alias gbw="gulp build && gulp watch --nobrowsersync"
+alias gw="gulp watch --nobrowsersync"
 alias here='printf %s "cd $(pwd)" | pbcopy'
 
 alias gp="git pull origin master"
+alias gpd="git pull origin develop"
 alias gpu="git push origin master"
-
-alias dgp="git pull origin develop"
-alias dgpu="git push origin develop"
+alias gpud="git push origin develop"
 
 alias reload="source ~/dotfiles/bash/aliases"
+
+alias hup="homestead up"
+alias hdown="homestead halt"
+alias hrestart="homestead halt && homestead up"
+alias hprov="homestead provision"
+alias hedit="homestead edit"
+
+alias assetslba="cd ~/Code/expose-laravel/lba/public/themes/lba"
+
+alias vup="cd ~/Homestead/ && vagrant up"
+alias vdown="cd ~/Homestead/ && vagrant halt"
+alias vrestart="cd ~/Homestead/ && vagrant halt && vagrant up"
+alias vprov="cd ~/Homestead/ && vagrant provision"
+alias vedit="subl ~/Homestead/Homestead.yaml"
+
+alias gcmb="git branch --merged | grep -Ev '(^\*|master)' | xargs git branch -d"
 
 # Expose stuff
 alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
@@ -19,17 +35,25 @@ alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall F
 
 
 # Functions
+
+# git
 function gc() {
     git commit -v -m "$*"
 }
 function clone() {
-    git clone ssh://git@my.parall.ax:7999/es/$1.git && cd $1 && make
+    git clone ssh://git@my.parall.ax:7999/ex2/$1.git && cd $1 && make
 }
-function gd() {
+function clonel() {
+    git clone ssh://git@my.parall.ax:7999/ex2/$1.git && cd $1 && sudo n 8.11.3 && composer install && yarn && gulp build && valet link && valet park && valet secure
+}
+function gdl() {
     git branch -D $1
 }
 function gdr() {
     git push origin --delete $1
+}
+function gdb() {
+    git branch -D $1 && git push origin --delete $1
 }
 function cleanb() {
     branch=$(git rev-parse --abbrev-ref HEAD)
@@ -39,7 +63,43 @@ function cleanb() {
     echo "Cleaned up $branch"
 }
 function subl() {
-	sublime $1 -a
+    sublime $1 -a
+}
+function vsc() {
+    code $1 --add
+}
+function st() {
+    cd ~/Code/statamic
+    options="$(ls|xargs)"
+
+    IFS=' '
+
+    select option in $options; do
+        cd $option
+        break
+    done
+}
+function lv() {
+    cd ~/Code/laravel
+    options="$(ls|xargs)"
+
+    IFS=' '
+
+    select option in $options; do
+        cd $option
+        break
+    done
+}
+function fs() {
+    cd ~/Code/flatsites
+    options="$(ls|xargs)"
+
+    IFS=' '
+
+    select option in $options; do
+        cd $option
+        break
+    done
 }
 function branch() {
     options="$(git branch|tr -d '\n'|tr -d '*'|tr -s ' '|xargs)"
@@ -70,4 +130,39 @@ function push() {
         git push origin $option
         break
     done
+}
+
+# ngrok
+function ngc() {
+    ngrok http -host-header=rewrite $1.expose.site:80
+}
+function ngl() {
+    ngrok http -host-header=rewrite $1.andy:80
+}
+
+# fix node
+function fixnode() {
+    brew cleanup
+    brew link node
+    brew uninstall node
+    brew install node
+}
+
+# switch project
+function el() {
+    cd ~/Code/expose-laravel/$1
+}
+function ec() {
+    cd ~/Code/expose/current/$1
+}
+
+function theme() {
+    cd ~/Code/statamic/$1/public/themes/$1/
+}
+
+function aliases() {
+    subl ~/dotfiles/bash/aliases
+}
+function gtrim() {
+    git branch --merged $1 | grep -v "\* $1" | xargs -n 1 git branch -d
 }
