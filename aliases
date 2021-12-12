@@ -1,25 +1,8 @@
-# Aliases
-alias ga="git add ."
-alias gs="git status"
-
 alias gbw="gulp build && gulp watch --nobrowsersync"
 alias gw="gulp watch --nobrowsersync"
 alias here='printf %s "cd $(pwd)" | pbcopy'
 
-alias gp="git pull origin master"
-alias gpd="git pull origin develop"
-alias gpu="git push origin master"
-alias gpud="git push origin develop"
-
-alias reload="source ~/dotfiles/bash/aliases"
-
-alias hup="homestead up"
-alias hdown="homestead halt"
-alias hrestart="homestead halt && homestead up"
-alias hprov="homestead provision"
-alias hedit="homestead edit"
-
-alias assetslba="cd ~/Code/expose-laravel/lba/public/themes/lba"
+alias reload="source ~/dotfiles/aliases"
 
 alias vup="cd ~/Homestead/ && vagrant up"
 alias vdown="cd ~/Homestead/ && vagrant halt"
@@ -33,18 +16,22 @@ alias gcmb="git branch --merged | grep -Ev '(^\*|master)' | xargs git branch -d"
 alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
 alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
 
+alias fix-spotlight="find . -path '*node_modules/*' -prune -o -type d -name 'node_modules' -exec touch '{}/.metadata_never_index' \;"
+alias fix-spotlight-globally="sudo find ~ -type d -path './.*' -prune -o -path './Pictures*' -prune -o -path './Library*' -prune -o -path '*node_modules/*' -prune -o -type d -name 'node_modules' -exec touch '{}/.metadata_never_index' \; -print"
+
 
 # Functions
 
 # git
-function gc() {
-    git commit -v -m "$*"
+function nv() {
+    echo $1 > .node-version
 }
-function clone() {
-    git clone ssh://git@my.parall.ax:7999/ex2/$1.git && cd $1 && make
+
+function gp() {
+    git pull origin master
 }
-function clonel() {
-    git clone ssh://git@my.parall.ax:7999/ex2/$1.git && cd $1 && sudo n 8.11.3 && composer install && yarn && gulp build && valet link && valet park && valet secure
+function gpu() {
+    git push origin master
 }
 function gdl() {
     git branch -D $1
@@ -68,39 +55,7 @@ function subl() {
 function vsc() {
     code $1 --add
 }
-function st() {
-    cd ~/Code/statamic
-    options="$(ls|xargs)"
 
-    IFS=' '
-
-    select option in $options; do
-        cd $option
-        break
-    done
-}
-function lv() {
-    cd ~/Code/laravel
-    options="$(ls|xargs)"
-
-    IFS=' '
-
-    select option in $options; do
-        cd $option
-        break
-    done
-}
-function fs() {
-    cd ~/Code/flatsites
-    options="$(ls|xargs)"
-
-    IFS=' '
-
-    select option in $options; do
-        cd $option
-        break
-    done
-}
 function branch() {
     options="$(git branch|tr -d '\n'|tr -d '*'|tr -s ' '|xargs)"
 
@@ -111,41 +66,13 @@ function branch() {
         break
     done
 }
-function pull() {
-    options="$(git branch|tr -d '\n'|tr -d '*'|tr -s ' '|xargs)"
-
-    IFS=' '
-
-    select option in $options; do
-        git pull origin $option
-        break
-    done
-}
-function push() {
-    options="$(git branch|tr -d '\n'|tr -d '*'|tr -s ' '|xargs)"
-
-    IFS=' '
-
-    select option in $options; do
-        git push origin $option
-        break
-    done
-}
 
 # ngrok
 function ngc() {
-    ngrok http -host-header=rewrite $1.expose.site:80
+    ngrok http -host-header=rewrite centre-for-public-impact.test
 }
 function ngl() {
-    ngrok http -host-header=rewrite $1.andy:80
-}
-
-# fix node
-function fixnode() {
-    brew cleanup
-    brew link node
-    brew uninstall node
-    brew install node
+    ngrok http -host-header=rewrite $1.test:80
 }
 
 # switch project
@@ -156,13 +83,6 @@ function ec() {
     cd ~/Code/expose/current/$1
 }
 
-function theme() {
-    cd ~/Code/statamic/$1/public/themes/$1/
-}
-
 function aliases() {
-    subl ~/dotfiles/bash/aliases
-}
-function gtrim() {
-    git branch --merged $1 | grep -v "\* $1" | xargs -n 1 git branch -d
+    subl ~/dotfiles/aliases
 }
