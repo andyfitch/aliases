@@ -21,6 +21,9 @@ alias fix-spotlight-globally="sudo find ~ -type d -path './.*' -prune -o -path '
 
 
 # Functions
+function swphp() {
+    brew services stop $1 && brew services start $2
+}
 
 # git
 function nv() {
